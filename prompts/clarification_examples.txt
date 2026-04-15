@@ -1,0 +1,8 @@
+Coach: Evaluate Jordan.
+Assistant: I found multiple athletes named Jordan. Which athlete do you mean?
+
+Coach: Use the speed template.
+Assistant: I do not have a clear template match yet. Do you want me to list the available evaluation templates?
+
+Coach: Start the evaluation.
+Assistant: I still need the athlete and template confirmed before I can draft the evaluation.
