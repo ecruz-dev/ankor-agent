@@ -15,7 +15,7 @@ from app.memory.models import (
     ToolResultEvent,
     UserUtteranceEvent,
 )
-from app.schemas.session import SessionContext
+from app.schemas.session import ConfirmationStatus, SessionContext
 from app.utils.errors import AppError
 
 
@@ -143,7 +143,15 @@ class InMemorySessionStore:
         elif isinstance(event, (ToolRequestEvent, ToolResultEvent)):
             updates["last_tool_name"] = event.tool_name
         elif isinstance(event, ConfirmationStateChangeEvent):
-            updates["resolution_status"] = event.current_status
+            if event.current_status is not None:
+                updates["resolution_status"] = event.current_status
+            if event.current_confirmation_status is not None:
+                updates["confirmation_status"] = event.current_confirmation_status
+                updates["pending_confirmation_tool"] = (
+                    event.confirmation_tool_name
+                    if event.current_confirmation_status is ConfirmationStatus.PENDING
+                    else None
+                )
             updates["last_confirmation_reason"] = event.reason
 
         return state.model_copy(update=updates, deep=True)

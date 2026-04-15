@@ -9,7 +9,7 @@ from uuid import uuid4
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from app.schemas.session import ResolutionStatus, SessionContext
+from app.schemas.session import ConfirmationStatus, ResolutionStatus, SessionContext
 
 
 def _utc_now() -> datetime:
@@ -87,8 +87,11 @@ class ConfirmationStateChangeEvent(MemoryEvent):
     event_type: Literal[SessionEventType.CONFIRMATION_STATE_CHANGE] = (
         SessionEventType.CONFIRMATION_STATE_CHANGE
     )
-    previous_status: ResolutionStatus
-    current_status: ResolutionStatus
+    previous_status: ResolutionStatus | None = None
+    current_status: ResolutionStatus | None = None
+    previous_confirmation_status: ConfirmationStatus | None = None
+    current_confirmation_status: ConfirmationStatus | None = None
+    confirmation_tool_name: str | None = None
     reason: str | None = None
 
 
@@ -98,6 +101,8 @@ class SessionStateSnapshot(SessionContext):
     created_at: datetime
     updated_at: datetime
     event_count: int = Field(default=0, ge=0)
+    confirmation_status: ConfirmationStatus = ConfirmationStatus.NONE
+    pending_confirmation_tool: str | None = None
     last_assistant_reply: str | None = None
     last_tool_name: str | None = None
     last_confirmation_reason: str | None = None

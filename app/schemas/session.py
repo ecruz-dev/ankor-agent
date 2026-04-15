@@ -16,6 +16,15 @@ class ResolutionStatus(str, Enum):
     PENDING_CONFIRMATION = "pending_confirmation"
 
 
+class ConfirmationStatus(str, Enum):
+    """Explicit confirmation state for sensitive actions."""
+
+    NONE = "none"
+    PENDING = "pending"
+    ACCEPTED = "accepted"
+    DENIED = "denied"
+
+
 class SessionContext(BaseModel):
     """Conversation state carried between tool calls."""
 
